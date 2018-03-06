@@ -1,15 +1,33 @@
 import React from "react";
 import { Link } from 'react-router-dom';
+import Book from './Book';
 
 class SearchBooks extends React.Component{
   state = {
-    query: ''
+    query: '',
+    searchResults: []
   }
+
+  searchResultsHtml = [];
 
   handleSearch = (query) => {
     this.setState({ query });
-    const result = this.props.search(query)
-      .then( (result) => (console.log(result)));
+    this.props
+      .search(query.trim())
+      .then( (books) => {
+        if(!books || books.error){
+          (this.setState({ searchResults: [] }))
+        } else {
+            books && this.setState( {searchResults : books.map( (book) => {
+              return(
+                <Book key      = {book.id}
+                      coverUrl = {book.imageLinks.thumbnail} 
+                      title    = {book.title}
+                      authors  = {book.authors} />
+              )
+          })});
+        } 
+      });     
   }
 
   render(){
@@ -29,13 +47,15 @@ class SearchBooks extends React.Component{
                    placeholder="Search by title or author"
                    value={this.state.query}
                    onChange={ (e) => {
-                     this.handleSearch(e.target.value);
+                    this.handleSearch(e.target.value);
                     }} />
 
           </div>
         </div>
         <div className="search-books-results">
-          <ol className="books-grid"></ol>
+          <ol className="books-grid">
+          {this.state.searchResults}
+          </ol>
         </div>
       </div>
 
