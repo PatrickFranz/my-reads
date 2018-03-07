@@ -1,16 +1,10 @@
 import React from 'react';
 
 import { Link } from 'react-router-dom';
-import * as BookAPI from '../BooksAPI';
 import Book from './Book';
 import BookShelf from './BookShelf';
 
 class ListBooks extends React.Component{
-
-  updateShelf = (book, newShelf) =>{
-    BookAPI.update(book, newShelf)
-      .then( () => this.props.updateBooks() );  
-  }
 
   render(){
     const {books} = this.props;
@@ -27,7 +21,7 @@ class ListBooks extends React.Component{
               .map( (book) => (
                 <Book key         = {book.id}
                       book        = {book}
-                      updateShelf = {this.updateShelf}
+                      updateShelf = {this.props.updateShelf}
                 />
               ))}
           </BookShelf>
@@ -37,7 +31,7 @@ class ListBooks extends React.Component{
               .map( (book) => (
                 <Book key         = {book.id}
                       book        = {book}
-                      updateShelf = {this.updateShelf}
+                      updateShelf = {this.props.updateShelf}
                 />
               ))}
           </BookShelf>
@@ -47,7 +41,7 @@ class ListBooks extends React.Component{
               .map( (book) => (
                 <Book key         = {book.id}
                       book        = {book}
-                      updateShelf = {this.updateShelf}                  
+                      updateShelf = {this.props.updateShelf}           
                 />
               ))}
           </BookShelf>

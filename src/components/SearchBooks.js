@@ -20,10 +20,9 @@ class SearchBooks extends React.Component{
         } else {
             books && this.setState( {searchResults : books.map( (book) => {
               return(
-                <Book key      = {book.id}
-                      coverUrl = {book.imageLinks.thumbnail} 
-                      title    = {book.title}
-                      authors  = {book.authors} />
+                <Book key         = {book.id}
+                      book        = {book}
+                      updateShelf = {this.props.updateShelf}/>
               )
           })});
         } 

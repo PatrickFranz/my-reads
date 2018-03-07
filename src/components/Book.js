@@ -1,8 +1,10 @@
 import React from 'react';
 
 class Book extends React.Component{  
+  
   moveShelves = (event) => {
-      this.props.updateShelf(this.props.book, event.target.options[event.target.options.selectedIndex].value)
+    console.log(this.props)
+      this.props.updateShelf(this.props.book, event.target.options[event.target.options.selectedIndex].value);
   }
 
   render(){
@@ -16,8 +18,9 @@ class Book extends React.Component{
                  style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
             <div className="book-shelf-changer">
               <select 
-                value={book.shelf}
-                onChange = { this.moveShelves }>
+                value={book.shelf && book.shelf}
+                onChange = {this.moveShelves}>
+
                 <option value="none" disabled>Move to...</option>
                 <option value="currentlyReading">Currently Reading</option>
                 <option value="wantToRead">Want to Read</option>
