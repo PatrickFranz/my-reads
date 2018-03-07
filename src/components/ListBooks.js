@@ -1,10 +1,16 @@
 import React from 'react';
 
 import { Link } from 'react-router-dom';
+import * as BookAPI from '../BooksAPI';
 import Book from './Book';
 import BookShelf from './BookShelf';
 
 class ListBooks extends React.Component{
+
+  updateShelf = (book, newShelf) =>{
+    BookAPI.update(book, newShelf)
+      .then( () => this.props.updateBooks() );  
+  }
 
   render(){
     const {books} = this.props;
@@ -19,10 +25,9 @@ class ListBooks extends React.Component{
             {books
               .filter( (book) => book.shelf === "currentlyReading" )
               .map( (book) => (
-                <Book key      = {book.id}
-                      coverUrl = {book.imageLinks.thumbnail} 
-                      title    = {book.title}
-                      authors  = {book.authors}
+                <Book key         = {book.id}
+                      book        = {book}
+                      updateShelf = {this.updateShelf}
                 />
               ))}
           </BookShelf>
@@ -30,10 +35,9 @@ class ListBooks extends React.Component{
             {books
               .filter( (book) => book.shelf === "wantToRead" )
               .map( (book) => (
-                <Book key      = {book.id}
-                      coverUrl = {book.imageLinks.thumbnail} 
-                      title    = {book.title}
-                      authors  = {book.authors}
+                <Book key         = {book.id}
+                      book        = {book}
+                      updateShelf = {this.updateShelf}
                 />
               ))}
           </BookShelf>
@@ -41,10 +45,9 @@ class ListBooks extends React.Component{
             {books
               .filter( (book) => book.shelf === "read" )
               .map( (book) => (
-                <Book key      = {book.id}
-                      coverUrl = {book.imageLinks.thumbnail} 
-                      title    = {book.title}
-                      authors  = {book.authors}
+                <Book key         = {book.id}
+                      book        = {book}
+                      updateShelf = {this.updateShelf}                  
                 />
               ))}
           </BookShelf>

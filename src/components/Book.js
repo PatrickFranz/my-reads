@@ -1,18 +1,23 @@
 import React from 'react';
 
 class Book extends React.Component{  
-  
+  moveShelves = (event) => {
+      this.props.updateShelf(this.props.book, event.target.options[event.target.options.selectedIndex].value)
+  }
+
   render(){
-    const { coverUrl, title, authors} = this.props;
+    const { book } = this.props;
     
     return(
       <li>
         <div className="book">
           <div className="book-top">
             <div className="book-cover" 
-                 style={{ width: 128, height: 193, backgroundImage: `url(${coverUrl})` }}></div>
+                 style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
             <div className="book-shelf-changer">
-              <select>
+              <select 
+                value={book.shelf}
+                onChange = { this.moveShelves }>
                 <option value="none" disabled>Move to...</option>
                 <option value="currentlyReading">Currently Reading</option>
                 <option value="wantToRead">Want to Read</option>
@@ -21,8 +26,8 @@ class Book extends React.Component{
               </select>
             </div>
           </div>
-          <div className="book-title">{title}</div>
-          <div className="book-authors">{authors && authors.map( author => `${author} `)}</div>
+          <div className="book-title">{book.title}</div>
+          <div className="book-authors">{book.authors && book.authors.map( author => `${author} `)}</div>
         </div>
       </li>
     )
