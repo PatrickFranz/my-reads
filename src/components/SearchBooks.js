@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from 'react-router-dom';
 import Book from './Book';
+import Modal from './Modal';
 
 class SearchBooks extends React.Component{
   state = {
@@ -8,24 +9,27 @@ class SearchBooks extends React.Component{
     searchResults: []
   }
 
-  searchResultsHtml = [];
-
   handleSearch = (query) => {
     this.setState({ query });
-    this.props
+    query && this.props
       .search(query.trim())
       .then( (books) => {
         if(!books || books.error){
           (this.setState({ searchResults: [] }))
+          return (
+            <p>No results found.</p>
+          )
         } else {
-            books && this.setState( {searchResults : books.map( (book) => {
+          if(books){
+            this.setState( {searchResults : books.map( (book) => {
               return(
                 <Book key         = {book.id}
                       book        = {book}
                       updateShelf = {this.props.updateShelf}/>
               )
-          })});
-        } 
+            })});
+          }
+        }
       });     
   }
 
@@ -53,14 +57,15 @@ class SearchBooks extends React.Component{
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-          {this.state.searchResults}
+            {this.state.searchResults} 
+          {this.state.searchResults.length < 1 && 
+            (<p>No results found.</p>)} 
           </ol>
         </div>
       </div>
 
     );
   }
-
 }
 
 export default SearchBooks;

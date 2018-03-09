@@ -3,8 +3,7 @@ import React from 'react';
 class Book extends React.Component{  
   
   moveShelves = (event) => {
-    console.log(this.props)
-      this.props.updateShelf(this.props.book, event.target.options[event.target.options.selectedIndex].value);
+    this.props.updateShelf(this.props.book, event.target.options[event.target.options.selectedIndex].value);
   }
 
   render(){
@@ -15,7 +14,12 @@ class Book extends React.Component{
         <div className="book">
           <div className="book-top">
             <div className="book-cover" 
-                 style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
+                style={{ 
+                  width: 128, 
+                  height: 193, 
+                  backgroundImage: `url(${book.imageLinks ? book.imageLinks.thumbnail : require("../images/no_image_available.svg")}`
+                }}>
+              </div>
             <div className="book-shelf-changer">
               <select 
                 value={book.shelf && book.shelf}
@@ -29,7 +33,7 @@ class Book extends React.Component{
               </select>
             </div>
           </div>
-          <div className="book-title">{book.title}</div>
+          <div className="book-title">{book.title && book.title}</div>
           <div className="book-authors">{book.authors && book.authors.map( author => `${author} `)}</div>
         </div>
       </li>
