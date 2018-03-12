@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from 'react-router-dom';
 import Book from './Book';
-import Modal from './Modal';
 
 class SearchBooks extends React.Component{
   state = {
@@ -9,9 +8,16 @@ class SearchBooks extends React.Component{
     searchResults: []
   }
 
+  isOnShelf = (book) => {
+    return this.props.books.find(shelfBook => shelfBook.id === book.id);
+  }
+
   handleSearch = (query) => {
     this.setState({ query });
-    query && this.props
+    if(query.length < 1){
+      this.setState({searchResults: []});
+    } else {
+    this.props
       .search(query.trim())
       .then( (books) => {
         if(!books || books.error){
@@ -21,16 +27,23 @@ class SearchBooks extends React.Component{
           )
         } else {
           if(books){
+            books.forEach( (book) => {
+              if(this.isOnShelf(book)){
+                console.log(`${book.id} is on shelf.`);
+                book.shelf = this.props.books.find((item) => item.id === book.id).shelf;
+              }
+            });
             this.setState( {searchResults : books.map( (book) => {
               return(
-                <Book key         = {book.id}
-                      book        = {book}
-                      updateShelf = {this.props.updateShelf}/>
+                  <Book key         = {book.id}
+                        book        = {book}
+                        updateShelf = {this.props.updateShelf}/>
               )
             })});
           }
         }
-      });     
+      });  
+    }   
   }
 
   render(){
